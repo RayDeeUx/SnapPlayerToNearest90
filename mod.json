@@ -8,7 +8,7 @@
 	},
 	"id": "raydeeux.snapplayertonearest90",
 	"name": "SnapPlayerToNearest90",
-	"version": "v1.0.1-beta.1",
+	"version": "v1.0.1",
 	"developer": "RayDeeUx",
 	"description": "Snaps the player to the nearest multiple of 90 degrees.",
 	"repository": "https://github.com/RayDeeUx/SnapPlayerToNearest90",

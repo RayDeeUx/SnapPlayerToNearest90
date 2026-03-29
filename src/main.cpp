@@ -10,10 +10,8 @@ $on_mod(Loaded) {
 }
 
 class $modify(MyPlayerObject, PlayerObject) {
-	virtual void setRotation(float rotation) {
-		if (enabled && this->m_gameLayer && (this == m_gameLayer->m_player1 || this == m_gameLayer->m_player2) && this->isInNormalMode() && !this->m_isDashing && this->m_isOnGround && !this->m_isOnSlope) {
-			rotation = std::round(rotation / 90.f) * 90.f;
-		}
-		PlayerObject::setRotation(rotation);
+	void hitGround(GameObject* object, bool notFlipped) {
+		PlayerObject::hitGround(object, notFlipped);
+		if (enabled && this->m_gameLayer && (this == m_gameLayer->m_player1 || this == m_gameLayer->m_player2) && this->isInNormalMode() && !this->m_isDashing && this->m_isOnGround && !this->m_isOnSlope) this->setRotation(std::round(this->getRotation() / 90.f) * 90.f);
 	}
 };
