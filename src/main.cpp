@@ -108,17 +108,17 @@ class $modify(MyPlayerObject, PlayerObject) {
 	void ringJump(RingObject* object, bool skipCheck) {
 		PlayerObject::ringJump(object, skipCheck);
 		if (this->isInNormalMode() && snapOnJumpOrb && !skipCheck && object && object->m_isActivated && object->m_activated) {
-			if (object && object->m_objectType == GameObjectType::YellowJumpRing && ignoreYellowOrb) return;
-			if (object && object->m_objectType == GameObjectType::PinkJumpRing && ignorePinkOrb) return;
-			if (object && object->m_objectType == GameObjectType::GravityRing && ignoreBlueOrb) return;
-			if (object && object->m_objectType == GameObjectType::GreenRing && ignoreGreenOrb) return;
-			if (object && object->m_objectType == GameObjectType::DropRing && ignoreBlackOrb) return;
-			if (object && object->m_objectType == GameObjectType::RedJumpRing && ignoreRedOrb) return;
-			if (object && object->m_objectType == GameObjectType::DashRing && ignoreGreenDashOrb) return;
-			if (object && object->m_objectType == GameObjectType::GravityDashRing && ignorePinkDashOrb) return;
-			if (object && object->m_objectType == GameObjectType::SpiderOrb && ignoreSpiderOrb) return;
-			if (object && object->m_objectType == GameObjectType::CustomRing && ignoreCustomOrb) return;
-			if (object && object->m_objectType == GameObjectType::TeleportOrb && ignoreTeleportOrb) return;
+			if (object->m_objectType == GameObjectType::YellowJumpRing && ignoreYellowOrb) return;
+			if (object->m_objectType == GameObjectType::PinkJumpRing && ignorePinkOrb) return;
+			if (object->m_objectType == GameObjectType::GravityRing && ignoreBlueOrb) return;
+			if (object->m_objectType == GameObjectType::GreenRing && ignoreGreenOrb) return;
+			if (object->m_objectType == GameObjectType::DropRing && ignoreBlackOrb) return;
+			if (object->m_objectType == GameObjectType::RedJumpRing && ignoreRedOrb) return;
+			if (object->m_objectType == GameObjectType::DashRing && ignoreGreenDashOrb) return;
+			if (object->m_objectType == GameObjectType::GravityDashRing && ignorePinkDashOrb) return;
+			if (object->m_objectType == GameObjectType::SpiderOrb && ignoreSpiderOrb) return;
+			if (object->m_objectType == GameObjectType::CustomRing && ignoreCustomOrb) return;
+			if (object->m_objectType == GameObjectType::TeleportOrb && ignoreTeleportOrb) return;
 			MyPlayerObject::snapToNearest90(true);
 		}
 	}
