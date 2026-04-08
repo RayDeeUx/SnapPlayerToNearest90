@@ -29,10 +29,7 @@ class $modify(MyPlayerObject, PlayerObject) {
 	}
 	void propellPlayer(float yVelocity, bool noEffects, int objectType) {
 		PlayerObject::propellPlayer(yVelocity, noEffects, objectType);
-		if (this->isInNormalMode() && snapOnJumpPad) {
-			log::info("objectType: {}", objectType);
-			MyPlayerObject::snapToNearest90(true);
-		}
+		if (this->isInNormalMode() && snapOnJumpPad) MyPlayerObject::snapToNearest90(true);
 	}
 	void ringJump(RingObject* object, bool skipCheck) {
 		PlayerObject::ringJump(object, skipCheck);
