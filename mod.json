@@ -8,7 +8,7 @@
 	},
 	"id": "raydeeux.snapplayertonearest90",
 	"name": "SnapPlayerToNearest90",
-	"version": "v1.0.1",
+	"version": "v1.0.2",
 	"developer": "RayDeeUx",
 	"description": "Snaps the player to the nearest multiple of 90 degrees.",
 	"repository": "https://github.com/RayDeeUx/SnapPlayerToNearest90",
@@ -17,6 +17,16 @@
 			"name": "Enabled",
 			"type": "bool",
 			"default": true
+		},
+		"snapOnJumpPad": {
+			"name": "Snap Rotation on Jump Pad",
+			"type": "bool",
+			"default": false
+		},
+		"snapOnJumpOrb": {
+			"name": "Snap Rotation on Jump Orb",
+			"type": "bool",
+			"default": false
 		}
 	},
 	"tags": [ "joke", "cheat", "gameplay" ],
