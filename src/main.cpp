@@ -19,20 +19,20 @@ $on_mod(Loaded) {
 
 class $modify(MyPlayerObject, PlayerObject) {
 	void snapToNearest90(const bool enforceGroundCheck) {
-		if (enabled && this->m_gameLayer && (this == m_gameLayer->m_player1 || this == m_gameLayer->m_player2) && this->isInNormalMode() && !this->m_isDashing && (this->m_isOnGround && !this->m_isOnSlope && enforceGroundCheck)) {
+		if (enabled && this->m_gameLayer && (this == m_gameLayer->m_player1 || this == m_gameLayer->m_player2) && this->isInNormalMode() && !this->m_isDashing && ((this->m_isOnGround && !this->m_isOnSlope) || enforceGroundCheck)) {
 			this->setRotation(std::round(this->getRotation() / 90.f) * 90.f);
 		}
 	}
 	void hitGround(GameObject* object, bool notFlipped) {
 		PlayerObject::hitGround(object, notFlipped);
-		MyPlayerObject::snapToNearest90(true);
+		MyPlayerObject::snapToNearest90(false);
 	}
 	void bumpPlayer(float bumpMod, int objectType, bool noEffects, GameObject* object) {
 		PlayerObject::bumpPlayer(bumpMod, objectType, noEffects, object);
-		if (snapOnJumpPad) MyPlayerObject::snapToNearest90(false);
+		if (snapOnJumpPad) MyPlayerObject::snapToNearest90(true);
 	}
 	void ringJump(RingObject* object, bool skipCheck) {
 		PlayerObject::ringJump(object, skipCheck);
-		if (snapOnJumpOrb) MyPlayerObject::snapToNearest90(false);
+		if (snapOnJumpOrb) MyPlayerObject::snapToNearest90(true);
 	}
 };
