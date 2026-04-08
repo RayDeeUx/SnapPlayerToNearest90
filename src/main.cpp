@@ -29,10 +29,13 @@ class $modify(MyPlayerObject, PlayerObject) {
 	}
 	void bumpPlayer(float bumpMod, int objectType, bool noEffects, GameObject* object) {
 		PlayerObject::bumpPlayer(bumpMod, objectType, noEffects, object);
-		if (snapOnJumpPad) MyPlayerObject::snapToNearest90(true);
+		if (this->isInNormalMode() && snapOnJumpPad) {
+			log::info("objectID: {}", object->m_objectID);
+			MyPlayerObject::snapToNearest90(true);
+		}
 	}
 	void ringJump(RingObject* object, bool skipCheck) {
 		PlayerObject::ringJump(object, skipCheck);
-		if (snapOnJumpOrb && !skipCheck && object && object->m_isActivated && object->m_activated) MyPlayerObject::snapToNearest90(true);
+		if (this->isInNormalMode() && snapOnJumpOrb && !skipCheck && object && object->m_isActivated && object->m_activated) MyPlayerObject::snapToNearest90(true);
 	}
 };
