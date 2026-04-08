@@ -33,6 +33,6 @@ class $modify(MyPlayerObject, PlayerObject) {
 	}
 	void ringJump(RingObject* object, bool skipCheck) {
 		PlayerObject::ringJump(object, skipCheck);
-		if (snapOnJumpOrb) MyPlayerObject::snapToNearest90(true);
+		if (snapOnJumpOrb && !skipCheck) MyPlayerObject::snapToNearest90(true);
 	}
 };
