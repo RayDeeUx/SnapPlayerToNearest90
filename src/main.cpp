@@ -107,20 +107,19 @@ class $modify(MyPlayerObject, PlayerObject) {
 	}
 	void gameEventTriggered(int gameEvent, int material) {
 		PlayerObject::gameEventTriggered(gameEvent, material);
-		if (this->isInNormalMode() && snapOnJumpOrb && !skipCheck && object && object->m_isActivated && object->m_activated) {
-			const GJGameEvent gameEventEnum = static_cast<GJGameEvent>(gameEvent);
-			if (gameEventEnum == GJGameEvent::YellowOrb && ignoreYellowOrb) return;
-			if (gameEventEnum == GJGameEvent::PinkOrb && ignorePinkOrb) return;
-			if (gameEventEnum == GJGameEvent::GravityOrb && ignoreBlueOrb) return;
-			if (gameEventEnum == GJGameEvent::GreenOrb && ignoreGreenOrb) return;
-			if (gameEventEnum == GJGameEvent::DropOrb && ignoreBlackOrb) return;
-			if (gameEventEnum == GJGameEvent::RedOrb && ignoreRedOrb) return;
-			if (gameEventEnum == GJGameEvent::DashOrb && ignoreGreenDashOrb) return;
-			if (gameEventEnum == GJGameEvent::GravityDashOrb && ignorePinkDashOrb) return;
-			if (gameEventEnum == GJGameEvent::SpiderOrb && ignoreSpiderOrb) return;
-			if (gameEventEnum == GJGameEvent::CustomOrb && ignoreCustomOrb) return;
-			if (gameEventEnum == GJGameEvent::TeleportOrb && ignoreTeleportOrb) return;
-			MyPlayerObject::snapToNearest90(true);
-		}
+		if (!this->isInNormalMode() || !snapOnJumpOrb) return;
+		const GJGameEvent gameEventEnum = static_cast<GJGameEvent>(gameEvent);
+		if (gameEventEnum == GJGameEvent::YellowOrb && ignoreYellowOrb) return;
+		if (gameEventEnum == GJGameEvent::PinkOrb && ignorePinkOrb) return;
+		if (gameEventEnum == GJGameEvent::GravityOrb && ignoreBlueOrb) return;
+		if (gameEventEnum == GJGameEvent::GreenOrb && ignoreGreenOrb) return;
+		if (gameEventEnum == GJGameEvent::DropOrb && ignoreBlackOrb) return;
+		if (gameEventEnum == GJGameEvent::RedOrb && ignoreRedOrb) return;
+		if (gameEventEnum == GJGameEvent::DashOrb && ignoreGreenDashOrb) return;
+		if (gameEventEnum == GJGameEvent::GravityDashOrb && ignorePinkDashOrb) return;
+		if (gameEventEnum == GJGameEvent::SpiderOrb && ignoreSpiderOrb) return;
+		if (gameEventEnum == GJGameEvent::CustomOrb && ignoreCustomOrb) return;
+		if (gameEventEnum == GJGameEvent::TeleportOrb && ignoreTeleportOrb) return;
+		MyPlayerObject::snapToNearest90(true);
 	}
 };
