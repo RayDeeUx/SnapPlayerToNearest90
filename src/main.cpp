@@ -81,7 +81,6 @@ $on_mod(Loaded) {
 
 	ignoreSpiderPad = Mod::get()->getSettingValue<bool>("ignoreSpiderPad");
 	listenForSettingChanges<bool>("ignoreSpiderPad", [](const bool ignoreSpiderPadNew) { ignoreSpiderPad = ignoreSpiderPadNew; });
-
 }
 
 class $modify(MyPlayerObject, PlayerObject) {
@@ -96,14 +95,14 @@ class $modify(MyPlayerObject, PlayerObject) {
 	}
 	void propellPlayer(float yVelocity, bool noEffects, int objectType) {
 		PlayerObject::propellPlayer(yVelocity, noEffects, objectType);
-		if (this->isInNormalMode() && snapOnJumpPad) {
-			if (objectType == static_cast<int>(GameObjectType::YellowJumpPad) && ignoreYellowPad) return;
-			if (objectType == static_cast<int>(GameObjectType::PinkJumpPad) && ignorePinkPad) return;
-			if (objectType == static_cast<int>(GameObjectType::GravityPad) && ignoreBluePad) return;
-			if (objectType == static_cast<int>(GameObjectType::RedJumpPad) && ignoreRedPad) return;
-			if (objectType == static_cast<int>(GameObjectType::SpiderPad) && ignoreSpiderPad) return;
-			MyPlayerObject::snapToNearest90(true);
-		}
+		if (!this->isInNormalMode() || !snapOnJumpPad) return;
+		const GameObjectType objectTypeEnum = static_cast<GameObjectType>(objectType);
+		if (objectTypeEnum == GameObjectType::YellowJumpPad && ignoreYellowPad) return;
+		if (objectTypeEnum == GameObjectType::PinkJumpPad && ignorePinkPad) return;
+		if (objectTypeEnum == GameObjectType::GravityPad && ignoreBluePad) return;
+		if (objectTypeEnum == GameObjectType::RedJumpPad && ignoreRedPad) return;
+		if (objectTypeEnum == GameObjectType::SpiderPad && ignoreSpiderPad) return;
+		MyPlayerObject::snapToNearest90(true);
 	}
 	void gameEventTriggered(int gameEvent, int material) {
 		PlayerObject::gameEventTriggered(gameEvent, material);
