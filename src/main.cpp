@@ -1,3 +1,4 @@
+#include <Geode/modify/GJBaseGameLayer.hpp>
 #include <Geode/modify/PlayerObject.hpp>
 
 using namespace geode::prelude;
@@ -104,10 +105,18 @@ class $modify(MyPlayerObject, PlayerObject) {
 		if (objectTypeEnum == GameObjectType::SpiderPad && ignoreSpiderPad) return;
 		MyPlayerObject::snapToNearest90(true);
 	}
-	void gameEventTriggered(int gameEvent, int material) {
-		PlayerObject::gameEventTriggered(gameEvent, material);
-		if (!this->isInNormalMode() || !snapOnJumpOrb) return;
-		const GJGameEvent gameEventEnum = static_cast<GJGameEvent>(gameEvent);
+};
+
+class $modify(MyGJBaseGameLayer, GJBaseGameLayer) {
+	void gameEventTriggered(GJGameEvent gameEventEnum, int material, int playerID) {
+		GJBaseGameLayer::gameEventTriggered(gameEventEnum, material, playerID);
+		if (!snapOnJumpOrb) return;
+
+		PlayerObject* player = nullptr;
+		if (this->m_player1 && playerID == static_cast<int>(this->m_player1->m_uniqueID)) player = this->m_player1;
+		else if (this->m_player2 && playerID == static_cast<int>(this->m_player2->m_uniqueID)) player = this->m_player2;
+		if (!player || !player->isInNormalMode()) return;
+
 		if (gameEventEnum == GJGameEvent::YellowOrb && ignoreYellowOrb) return;
 		if (gameEventEnum == GJGameEvent::PinkOrb && ignorePinkOrb) return;
 		if (gameEventEnum == GJGameEvent::GravityOrb && ignoreBlueOrb) return;
@@ -119,6 +128,7 @@ class $modify(MyPlayerObject, PlayerObject) {
 		if (gameEventEnum == GJGameEvent::SpiderOrb && ignoreSpiderOrb) return;
 		if (gameEventEnum == GJGameEvent::CustomOrb && ignoreCustomOrb) return;
 		if (gameEventEnum == GJGameEvent::TeleportOrb && ignoreTeleportOrb) return;
+
 		MyPlayerObject::snapToNearest90(true);
 	}
 };
