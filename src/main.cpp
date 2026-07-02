@@ -129,6 +129,6 @@ class $modify(MyGJBaseGameLayer, GJBaseGameLayer) {
 		if (gameEventEnum == GJGameEvent::CustomOrb && ignoreCustomOrb) return;
 		if (gameEventEnum == GJGameEvent::TeleportOrb && ignoreTeleportOrb) return;
 
-		MyPlayerObject::snapToNearest90(true);
+		geode::cast::modify_cast<MyPlayerObject*>(player)->snapToNearest90(true);
 	}
 };
