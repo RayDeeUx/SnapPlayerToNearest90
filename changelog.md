@@ -1,4 +1,6 @@
 # SnapPlayerToNearest90 Changelog
+## v1.0.5
+- It has come to my attention that the same someone being extra pedantic and granular has a valid bug report to bring to me for the first time.
 ## v1.0.4
 - It has come to my attention that the same someone being extra pedantic also loves granularity to an unhealthy degree.
 ## v1.0.3

@@ -97,28 +97,29 @@ class $modify(MyPlayerObject, PlayerObject) {
 	void propellPlayer(float yVelocity, bool noEffects, int objectType) {
 		PlayerObject::propellPlayer(yVelocity, noEffects, objectType);
 		if (this->isInNormalMode() && snapOnJumpPad) {
-			if (objectType = static_cast<int>(GameObjectType::YellowJumpPad) && ignoreYellowPad) return;
-			if (objectType = static_cast<int>(GameObjectType::PinkJumpPad) && ignorePinkPad) return;
-			if (objectType = static_cast<int>(GameObjectType::GravityPad) && ignoreBluePad) return;
-			if (objectType = static_cast<int>(GameObjectType::RedJumpPad) && ignoreRedPad) return;
-			if (objectType = static_cast<int>(GameObjectType::SpiderPad) && ignoreSpiderPad) return;
+			if (objectType == static_cast<int>(GameObjectType::YellowJumpPad) && ignoreYellowPad) return;
+			if (objectType == static_cast<int>(GameObjectType::PinkJumpPad) && ignorePinkPad) return;
+			if (objectType == static_cast<int>(GameObjectType::GravityPad) && ignoreBluePad) return;
+			if (objectType == static_cast<int>(GameObjectType::RedJumpPad) && ignoreRedPad) return;
+			if (objectType == static_cast<int>(GameObjectType::SpiderPad) && ignoreSpiderPad) return;
 			MyPlayerObject::snapToNearest90(true);
 		}
 	}
-	void ringJump(RingObject* object, bool skipCheck) {
-		PlayerObject::ringJump(object, skipCheck);
+	void gameEventTriggered(int gameEvent, int material) {
+		PlayerObject::gameEventTriggered(gameEvent, material);
 		if (this->isInNormalMode() && snapOnJumpOrb && !skipCheck && object && object->m_isActivated && object->m_activated) {
-			if (object->m_objectType == GameObjectType::YellowJumpRing && ignoreYellowOrb) return;
-			if (object->m_objectType == GameObjectType::PinkJumpRing && ignorePinkOrb) return;
-			if (object->m_objectType == GameObjectType::GravityRing && ignoreBlueOrb) return;
-			if (object->m_objectType == GameObjectType::GreenRing && ignoreGreenOrb) return;
-			if (object->m_objectType == GameObjectType::DropRing && ignoreBlackOrb) return;
-			if (object->m_objectType == GameObjectType::RedJumpRing && ignoreRedOrb) return;
-			if (object->m_objectType == GameObjectType::DashRing && ignoreGreenDashOrb) return;
-			if (object->m_objectType == GameObjectType::GravityDashRing && ignorePinkDashOrb) return;
-			if (object->m_objectType == GameObjectType::SpiderOrb && ignoreSpiderOrb) return;
-			if (object->m_objectType == GameObjectType::CustomRing && ignoreCustomOrb) return;
-			if (object->m_objectType == GameObjectType::TeleportOrb && ignoreTeleportOrb) return;
+			const GJGameEvent gameEventEnum = static_cast<GJGameEvent>(gameEvent);
+			if (gameEventEnum == GJGameEvent::YellowOrb && ignoreYellowOrb) return;
+			if (gameEventEnum == GJGameEvent::PinkOrb && ignorePinkOrb) return;
+			if (gameEventEnum == GJGameEvent::GravityOrb && ignoreBlueOrb) return;
+			if (gameEventEnum == GJGameEvent::GreenOrb && ignoreGreenOrb) return;
+			if (gameEventEnum == GJGameEvent::DropOrb && ignoreBlackOrb) return;
+			if (gameEventEnum == GJGameEvent::RedOrb && ignoreRedOrb) return;
+			if (gameEventEnum == GJGameEvent::DashOrb && ignoreGreenDashOrb) return;
+			if (gameEventEnum == GJGameEvent::GravityDashOrb && ignorePinkDashOrb) return;
+			if (gameEventEnum == GJGameEvent::SpiderOrb && ignoreSpiderOrb) return;
+			if (gameEventEnum == GJGameEvent::CustomOrb && ignoreCustomOrb) return;
+			if (gameEventEnum == GJGameEvent::TeleportOrb && ignoreTeleportOrb) return;
 			MyPlayerObject::snapToNearest90(true);
 		}
 	}
