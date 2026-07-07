@@ -89,14 +89,14 @@ $on_mod(Loaded) {
 }
 
 class $modify(MyPlayerObject, PlayerObject) {
+	struct Fields {
+		unsigned int stupidJump = 0;
+	};
 	void snapToNearest90(const bool enforceGroundCheck) {
 		if (enabled && this->m_gameLayer && (this == m_gameLayer->m_player1 || this == m_gameLayer->m_player2) && this->isInNormalMode() && !this->m_isDashing && ((this->m_isOnGround && !this->m_isOnSlope) || enforceGroundCheck)) {
 			const float desiredAngle = std::round(this->getRotation() / 90.f) * 90.f;
 			if (rotateActualPlayer) this->setRotation(desiredAngle);
-			else if (m_iconSprite && m_iconGlow) {
-				m_iconSprite->setRotation(desiredAngle);
-				m_iconGlow->setRotation(desiredAngle);
-			}
+			else if (this->m_mainLayer) this->m_mainLayer->setRotation(desiredAngle);
 		}
 	}
 	void hitGround(GameObject* object, bool notFlipped) {
@@ -114,8 +114,15 @@ class $modify(MyPlayerObject, PlayerObject) {
 		if (objectTypeEnum == GameObjectType::SpiderPad && ignoreSpiderPad) return;
 		MyPlayerObject::snapToNearest90(true);
 	}
+	void incrementJumps() {
+		PlayerObject::incrementJumps();
+		stupidJump++;
+	}
 	void ringJump(RingObject* object, bool skipCheck) {
+		Fields* fields = m_fields.self();
+		const unsigned int originalStupidJump = fields->stupidJump;
 		PlayerObject::ringJump(object, skipCheck);
+		if (stupidJump == originalStupidJump) return;
 		if (this->isInNormalMode() && snapOnJumpOrb && object) {
 			if (object->m_objectType == GameObjectType::YellowJumpRing && ignoreYellowOrb) return;
 			if (object->m_objectType == GameObjectType::PinkJumpRing && ignorePinkOrb) return;
