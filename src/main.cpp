@@ -122,7 +122,7 @@ class $modify(MyPlayerObject, PlayerObject) {
 		Fields* fields = m_fields.self();
 		const unsigned int originalStupidJump = fields->stupidJump;
 		PlayerObject::ringJump(object, skipCheck);
-		if (stupidJump == originalStupidJump) return;
+		if (fields->stupidJump == originalStupidJump) return;
 		if (this->isInNormalMode() && snapOnJumpOrb && object) {
 			if (object->m_objectType == GameObjectType::YellowJumpRing && ignoreYellowOrb) return;
 			if (object->m_objectType == GameObjectType::PinkJumpRing && ignorePinkOrb) return;
