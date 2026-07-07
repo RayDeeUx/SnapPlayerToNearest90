@@ -124,9 +124,7 @@ class $modify(MyPlayerObject, PlayerObject) {
 		auto v8 = object->m_objectType;
 		auto v9 = v8 == static_cast<GameObjectType>(static_cast<int>(GameObjectType::GravityTogglePortal) | static_cast<int>(GameObjectType::NormalGravityPortal));
 		auto v10 = (v8 != static_cast<GameObjectType>(static_cast<int>(GameObjectType::GravityTogglePortal) | static_cast<int>(GameObjectType::NormalGravityPortal))) & (v7 ^ 1);
-		if ((!this->m_stateRingJump2 || this->m_isDashing || !this->m_stateJumpBuffered ||
-		this->m_touchedRing >= v10 && this->m_touchedCustomRing >= v7 && this->m_touchedGravityPortal >= v9)
-		&& !skipCheck) return;
+		if ((!this->m_stateRingJump2 || this->m_isDashing || !this->m_stateJumpBuffered || this->m_touchedRing >= v10 && this->m_touchedCustomRing >= v7 && this->m_touchedGravityPortal >= v9) && !skipCheck) return;
 
 		if (object->m_objectType == GameObjectType::YellowJumpRing && ignoreYellowOrb) return;
 		if (object->m_objectType == GameObjectType::PinkJumpRing && ignorePinkOrb) return;
