@@ -108,7 +108,7 @@ class $modify(MyPlayerObject, PlayerObject) {
 	void ringJump(RingObject* object, bool skipCheck) {
 		PlayerObject::ringJump(object, skipCheck);
 		if (!this->isInNormalMode() || !snapOnJumpOrb || !object) return;
-		if (!this->m_holdingButtons.at(static_cast<int>(PlayerButton::Jump)) || this->m_stateJumpBuffered) return;
+		if (!this->m_holdingButtons.at(static_cast<int>(PlayerButton::Jump))) return; // this is not a catch-all fix!!! the bug just happens FAR less often now i think
 		if (object->m_objectType == GameObjectType::YellowJumpRing && ignoreYellowOrb) return;
 		if (object->m_objectType == GameObjectType::PinkJumpRing && ignorePinkOrb) return;
 		if (object->m_objectType == GameObjectType::GravityRing && ignoreBlueOrb) return;
