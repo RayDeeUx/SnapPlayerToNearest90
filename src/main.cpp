@@ -84,11 +84,19 @@ $on_mod(Loaded) {
 }
 
 class $modify(MyPlayerObject, PlayerObject) {
+	struct Fields {
+		bool alreadySnapped = false;
+	};
 	void snapToNearest90(const bool enforceGroundCheck) {
 		if (enabled && this->m_gameLayer && (this == m_gameLayer->m_player1 || this == m_gameLayer->m_player2) && this->isInNormalMode() && !this->m_isDashing && ((this->m_isOnGround && !this->m_isOnSlope) || enforceGroundCheck)) {
 			const float desiredAngle = std::round(this->getRotation() / 90.f) * 90.f;
 			this->setRotation(desiredAngle);
 		}
+	}
+	bool releaseButton(PlayerButton button) {
+		bool ret = PlayerObject::releaseButton(button);
+		if (button == PlayerButton::Jump) m_fields->alreadySnapped = false;
+		return ret;
 	}
 	void hitGround(GameObject* object, bool notFlipped) {
 		PlayerObject::hitGround(object, notFlipped);
@@ -108,7 +116,7 @@ class $modify(MyPlayerObject, PlayerObject) {
 	void ringJump(RingObject* object, bool skipCheck) {
 		PlayerObject::ringJump(object, skipCheck);
 		if (!this->isInNormalMode() || !snapOnJumpOrb || !object) return;
-		if (!this->m_holdingButtons.at(static_cast<int>(PlayerButton::Jump))) return; // this is not a catch-all fix!!! the bug just happens FAR less often now i think
+		if (!this->m_holdingButtons.at(static_cast<int>(PlayerButton::Jump)) || m_fields->alreadySnapped) return; // this is not a catch-all fix!!! the bug just happens FAR less often now i think
 		if (object->m_objectType == GameObjectType::YellowJumpRing && ignoreYellowOrb) return;
 		if (object->m_objectType == GameObjectType::PinkJumpRing && ignorePinkOrb) return;
 		if (object->m_objectType == GameObjectType::GravityRing && ignoreBlueOrb) return;
@@ -121,5 +129,6 @@ class $modify(MyPlayerObject, PlayerObject) {
 		if (object->m_objectType == GameObjectType::CustomRing && ignoreCustomOrb) return;
 		if (object->m_objectType == GameObjectType::TeleportOrb && ignoreTeleportOrb) return;
 		MyPlayerObject::snapToNearest90(true);
+		m_fields->alreadySnapped = true;
 	}
 };
