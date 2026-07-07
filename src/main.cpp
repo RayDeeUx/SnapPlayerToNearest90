@@ -116,7 +116,7 @@ class $modify(MyPlayerObject, PlayerObject) {
 	}
 	void incrementJumps() {
 		PlayerObject::incrementJumps();
-		stupidJump++;
+		m_fields->stupidJump++;
 	}
 	void ringJump(RingObject* object, bool skipCheck) {
 		Fields* fields = m_fields.self();
