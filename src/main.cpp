@@ -106,7 +106,7 @@ class $modify(MyPlayerObject, PlayerObject) {
 	}
 	void ringJump(RingObject* object, bool skipCheck) {
 		PlayerObject::ringJump(object, skipCheck);
-		if (this->isInNormalMode() && snapOnJumpOrb && !skipCheck && object && object->m_activated) {
+		if (this->isInNormalMode() && snapOnJumpOrb && !skipCheck && object) {
 			if (object->m_objectType == GameObjectType::YellowJumpRing && ignoreYellowOrb) return;
 			if (object->m_objectType == GameObjectType::PinkJumpRing && ignorePinkOrb) return;
 			if (object->m_objectType == GameObjectType::GravityRing && ignoreBlueOrb) return;
