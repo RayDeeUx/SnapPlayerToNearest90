@@ -117,14 +117,15 @@ class $modify(MyPlayerObject, PlayerObject) {
 	void ringJump(RingObject* object, bool skipCheck) {
 		PlayerObject::ringJump(object, skipCheck);
 		if (!this->isInNormalMode() || !snapOnJumpOrb || !object) return;
-		if (this->m_isDead || m_ringRelatedSet.count(object->m_uniqueID) != 0) return;
 		
 		// thank you prevter for the decomp
-		auto v7 = object->m_objectType == GameObjectType::CustomRing;
-		auto v8 = object->m_objectType;
-		auto v9 = v8 == static_cast<GameObjectType>(static_cast<int>(GameObjectType::GravityTogglePortal) | static_cast<int>(GameObjectType::NormalGravityPortal));
-		auto v10 = (v8 != static_cast<GameObjectType>(static_cast<int>(GameObjectType::GravityTogglePortal) | static_cast<int>(GameObjectType::NormalGravityPortal))) & (v7 ^ 1);
-		if ((!this->m_stateRingJump2 || this->m_isDashing || !this->m_stateJumpBuffered || this->m_touchedRing >= v10 && this->m_touchedCustomRing >= v7 && this->m_touchedGravityPortal >= v9) && !skipCheck) return;
+		// auto v7 = object->m_objectType == GameObjectType::CustomRing;
+		// auto v8 = object->m_objectType;
+		// auto v9 = v8 == static_cast<GameObjectType>(static_cast<int>(GameObjectType::GravityTogglePortal) | static_cast<int>(GameObjectType::NormalGravityPortal));
+		// auto v10 = (v8 != static_cast<GameObjectType>(static_cast<int>(GameObjectType::GravityTogglePortal) | static_cast<int>(GameObjectType::NormalGravityPortal))) & (v7 ^ 1);
+		// if ((!this->m_stateRingJump2 || this->m_isDashing || !this->m_stateJumpBuffered || this->m_touchedRing >= v10 && this->m_touchedCustomRing >= v7 && this->m_touchedGravityPortal >= v9) && !skipCheck) return;
+
+		if (!this->m_holdingButtons.at(static_cast<int>(PlayerButton::Jump)))) return;
 
 		if (object->m_objectType == GameObjectType::YellowJumpRing && ignoreYellowOrb) return;
 		if (object->m_objectType == GameObjectType::PinkJumpRing && ignorePinkOrb) return;
