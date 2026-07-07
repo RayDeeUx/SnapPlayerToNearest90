@@ -114,28 +114,31 @@ class $modify(MyPlayerObject, PlayerObject) {
 		if (objectTypeEnum == GameObjectType::SpiderPad && ignoreSpiderPad) return;
 		MyPlayerObject::snapToNearest90(true);
 	}
-	void incrementJumps() {
-		PlayerObject::incrementJumps();
-		m_fields->stupidJump++;
-	}
 	void ringJump(RingObject* object, bool skipCheck) {
-		Fields* fields = m_fields.self();
-		const unsigned int originalStupidJump = fields->stupidJump;
 		PlayerObject::ringJump(object, skipCheck);
-		if (fields->stupidJump == originalStupidJump) return;
-		if (this->isInNormalMode() && snapOnJumpOrb && object) {
-			if (object->m_objectType == GameObjectType::YellowJumpRing && ignoreYellowOrb) return;
-			if (object->m_objectType == GameObjectType::PinkJumpRing && ignorePinkOrb) return;
-			if (object->m_objectType == GameObjectType::GravityRing && ignoreBlueOrb) return;
-			if (object->m_objectType == GameObjectType::GreenRing && ignoreGreenOrb) return;
-			if (object->m_objectType == GameObjectType::DropRing && ignoreBlackOrb) return;
-			if (object->m_objectType == GameObjectType::RedJumpRing && ignoreRedOrb) return;
-			if (object->m_objectType == GameObjectType::DashRing && ignoreGreenDashOrb) return;
-			if (object->m_objectType == GameObjectType::GravityDashRing && ignorePinkDashOrb) return;
-			if (object->m_objectType == GameObjectType::SpiderOrb && ignoreSpiderOrb) return;
-			if (object->m_objectType == GameObjectType::CustomRing && ignoreCustomOrb) return;
-			if (object->m_objectType == GameObjectType::TeleportOrb && ignoreTeleportOrb) return;
-			MyPlayerObject::snapToNearest90(true);
-		}
+		if (!this->isInNormalMode() || !snapOnJumpOrb || !object) return;
+		if (this->m_isDead || m_ringRelatedSet.contains(object->m_uniqueID)) return;
+		
+		// thank you prevter for the decomp
+		auto v7 = object->m_objectType == GameObjectType::CustomRing;
+		auto v8 = object->m_objectType;
+		auto v9 = v8 == (GameObjectType::GravityTogglePortal | GameObjectType::NormalGravityPortal);
+		auto v10 = (v8 != (GameObjectType::GravityTogglePortal | GameObjectType::NormalGravityPortal)) & (v7 ^ 1);
+		if ((!this->m_stateRingJump2 || this->m_isDashing || !this->m_stateJumpBuffered ||
+		this->m_touchedRing >= v10 && this->m_touchedCustomRing >= v7 && this->m_touchedGravityPortal >= v9)
+		&& !skipCheck) return;
+
+		if (object->m_objectType == GameObjectType::YellowJumpRing && ignoreYellowOrb) return;
+		if (object->m_objectType == GameObjectType::PinkJumpRing && ignorePinkOrb) return;
+		if (object->m_objectType == GameObjectType::GravityRing && ignoreBlueOrb) return;
+		if (object->m_objectType == GameObjectType::GreenRing && ignoreGreenOrb) return;
+		if (object->m_objectType == GameObjectType::DropRing && ignoreBlackOrb) return;
+		if (object->m_objectType == GameObjectType::RedJumpRing && ignoreRedOrb) return;
+		if (object->m_objectType == GameObjectType::DashRing && ignoreGreenDashOrb) return;
+		if (object->m_objectType == GameObjectType::GravityDashRing && ignorePinkDashOrb) return;
+		if (object->m_objectType == GameObjectType::SpiderOrb && ignoreSpiderOrb) return;
+		if (object->m_objectType == GameObjectType::CustomRing && ignoreCustomOrb) return;
+		if (object->m_objectType == GameObjectType::TeleportOrb && ignoreTeleportOrb) return;
+		MyPlayerObject::snapToNearest90(true);
 	}
 };
