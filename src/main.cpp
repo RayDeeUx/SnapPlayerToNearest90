@@ -122,8 +122,8 @@ class $modify(MyPlayerObject, PlayerObject) {
 		// thank you prevter for the decomp
 		auto v7 = object->m_objectType == GameObjectType::CustomRing;
 		auto v8 = object->m_objectType;
-		auto v9 = v8 == (GameObjectType::GravityTogglePortal | GameObjectType::NormalGravityPortal);
-		auto v10 = (v8 != (GameObjectType::GravityTogglePortal | GameObjectType::NormalGravityPortal)) & (v7 ^ 1);
+		auto v9 = v8 == static_cast<GameObjectType>(static_cast<int>(GameObjectType::GravityTogglePortal) | static_cast<int>(GameObjectType::NormalGravityPortal));
+		auto v10 = (v8 != static_cast<GameObjectType>(static_cast<int>(GameObjectType::GravityTogglePortal) | static_cast<int>(GameObjectType::NormalGravityPortal))) & (v7 ^ 1);
 		if ((!this->m_stateRingJump2 || this->m_isDashing || !this->m_stateJumpBuffered ||
 		this->m_touchedRing >= v10 && this->m_touchedCustomRing >= v7 && this->m_touchedGravityPortal >= v9)
 		&& !skipCheck) return;
