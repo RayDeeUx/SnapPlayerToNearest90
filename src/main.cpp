@@ -6,8 +6,6 @@ bool enabled = true;
 bool snapOnJumpPad = false;
 bool snapOnJumpOrb = false;
 
-bool rotateActualPlayer = false;
-
 bool ignoreYellowOrb = false;
 bool ignorePinkOrb = false;
 bool ignoreBlueOrb = false;
@@ -35,9 +33,6 @@ $on_mod(Loaded) {
 
 	snapOnJumpOrb = Mod::get()->getSettingValue<bool>("snapOnJumpOrb");
 	listenForSettingChanges<bool>("snapOnJumpOrb", [](const bool newSnapOnJumpOrb) { snapOnJumpOrb = newSnapOnJumpOrb; });
-
-	rotateActualPlayer = Mod::get()->getSettingValue<bool>("rotateActualPlayer");
-	listenForSettingChanges<bool>("rotateActualPlayer", [](const bool newRotateActualPlayer) { rotateActualPlayer = newRotateActualPlayer; });
 
 	ignoreYellowOrb = Mod::get()->getSettingValue<bool>("ignoreYellowOrb");
 	listenForSettingChanges<bool>("ignoreYellowOrb", [](const bool ignoreYellowOrbNew) { ignoreYellowOrb = ignoreYellowOrbNew; });
@@ -92,8 +87,7 @@ class $modify(MyPlayerObject, PlayerObject) {
 	void snapToNearest90(const bool enforceGroundCheck) {
 		if (enabled && this->m_gameLayer && (this == m_gameLayer->m_player1 || this == m_gameLayer->m_player2) && this->isInNormalMode() && !this->m_isDashing && ((this->m_isOnGround && !this->m_isOnSlope) || enforceGroundCheck)) {
 			const float desiredAngle = std::round(this->getRotation() / 90.f) * 90.f;
-			if (rotateActualPlayer) this->setRotation(desiredAngle);
-			else if (this->m_mainLayer) this->m_mainLayer->setRotation(desiredAngle);
+			this->setRotation(desiredAngle);
 		}
 	}
 	void hitGround(GameObject* object, bool notFlipped) {
@@ -114,16 +108,7 @@ class $modify(MyPlayerObject, PlayerObject) {
 	void ringJump(RingObject* object, bool skipCheck) {
 		PlayerObject::ringJump(object, skipCheck);
 		if (!this->isInNormalMode() || !snapOnJumpOrb || !object) return;
-		
-		// thank you prevter for the decomp
-		// auto v7 = object->m_objectType == GameObjectType::CustomRing;
-		// auto v8 = object->m_objectType;
-		// auto v9 = v8 == static_cast<GameObjectType>(static_cast<int>(GameObjectType::GravityTogglePortal) | static_cast<int>(GameObjectType::NormalGravityPortal));
-		// auto v10 = (v8 != static_cast<GameObjectType>(static_cast<int>(GameObjectType::GravityTogglePortal) | static_cast<int>(GameObjectType::NormalGravityPortal))) & (v7 ^ 1);
-		// if ((!this->m_stateRingJump2 || this->m_isDashing || !this->m_stateJumpBuffered || this->m_touchedRing >= v10 && this->m_touchedCustomRing >= v7 && this->m_touchedGravityPortal >= v9) && !skipCheck) return;
-
-		if (!this->m_holdingButtons.at(static_cast<int>(PlayerButton::Jump))) return;
-
+		if (!this->m_holdingButtons.at(static_cast<int>(PlayerButton::Jump)) || this->m_stateJumpBuffered) return;
 		if (object->m_objectType == GameObjectType::YellowJumpRing && ignoreYellowOrb) return;
 		if (object->m_objectType == GameObjectType::PinkJumpRing && ignorePinkOrb) return;
 		if (object->m_objectType == GameObjectType::GravityRing && ignoreBlueOrb) return;
