@@ -1,4 +1,3 @@
-#include <Geode/modify/GJBaseGameLayer.hpp>
 #include <Geode/modify/PlayerObject.hpp>
 
 using namespace geode::prelude;
@@ -105,34 +104,21 @@ class $modify(MyPlayerObject, PlayerObject) {
 		if (objectTypeEnum == GameObjectType::SpiderPad && ignoreSpiderPad) return;
 		MyPlayerObject::snapToNearest90(true);
 	}
-};
-
-class $modify(MyGJBaseGameLayer, GJBaseGameLayer) {
-	void gameEventTriggered(GJGameEvent gameEventEnum, int material, int playerID) {
-		GJBaseGameLayer::gameEventTriggered(gameEventEnum, material, playerID);
-		if (!snapOnJumpOrb) return;
-
-		PlayerObject* player = nullptr;
-		if (this->m_player1 && playerID == static_cast<int>(this->m_player1->m_uniqueID)) player = this->m_player1;
-		else if (this->m_player2 && playerID == static_cast<int>(this->m_player2->m_uniqueID)) player = this->m_player2;
-		if (!player || !player->isInNormalMode()) return;
-
-		if (gameEventEnum == GJGameEvent::YellowOrb && ignoreYellowOrb) return;
-		if (gameEventEnum == GJGameEvent::PinkOrb && ignorePinkOrb) return;
-		if (gameEventEnum == GJGameEvent::GravityOrb && ignoreBlueOrb) return;
-		if (gameEventEnum == GJGameEvent::GreenOrb && ignoreGreenOrb) return;
-		if (gameEventEnum == GJGameEvent::DropOrb && ignoreBlackOrb) return;
-		if (gameEventEnum == GJGameEvent::RedOrb && ignoreRedOrb) return;
-		if (gameEventEnum == GJGameEvent::DashOrb && ignoreGreenDashOrb) return;
-		if (gameEventEnum == GJGameEvent::GravityDashOrb && ignorePinkDashOrb) return;
-		if (gameEventEnum == GJGameEvent::SpiderOrb && ignoreSpiderOrb) return;
-		if (gameEventEnum == GJGameEvent::CustomOrb && ignoreCustomOrb) return;
-		if (gameEventEnum == GJGameEvent::TeleportOrb && ignoreTeleportOrb) return;
-
-		for (RingObject* ring : CCArrayExt<RingObject*>(player->m_touchingRings)) {
-			if (ring && !ring->m_activated && (ring->m_isMultiTriggered || ring->m_isMultiActivate || !ring->m_isNoMultiActivate)) return;
+	void ringJump(RingObject* object, bool skipCheck) {
+		PlayerObject::ringJump(object, skipCheck);
+		if (this->isInNormalMode() && snapOnJumpOrb && !skipCheck && object && (object->m_isActivated || object->m_activated)) {
+			if (object->m_objectType == GameObjectType::YellowJumpRing && ignoreYellowOrb) return;
+			if (object->m_objectType == GameObjectType::PinkJumpRing && ignorePinkOrb) return;
+			if (object->m_objectType == GameObjectType::GravityRing && ignoreBlueOrb) return;
+			if (object->m_objectType == GameObjectType::GreenRing && ignoreGreenOrb) return;
+			if (object->m_objectType == GameObjectType::DropRing && ignoreBlackOrb) return;
+			if (object->m_objectType == GameObjectType::RedJumpRing && ignoreRedOrb) return;
+			if (object->m_objectType == GameObjectType::DashRing && ignoreGreenDashOrb) return;
+			if (object->m_objectType == GameObjectType::GravityDashRing && ignorePinkDashOrb) return;
+			if (object->m_objectType == GameObjectType::SpiderOrb && ignoreSpiderOrb) return;
+			if (object->m_objectType == GameObjectType::CustomRing && ignoreCustomOrb) return;
+			if (object->m_objectType == GameObjectType::TeleportOrb && ignoreTeleportOrb) return;
+			MyPlayerObject::snapToNearest90(true);
 		}
-
-		geode::cast::modify_cast<MyPlayerObject*>(player)->snapToNearest90(true);
 	}
 };
