@@ -117,7 +117,7 @@ class $modify(MyPlayerObject, PlayerObject) {
 	void ringJump(RingObject* object, bool skipCheck) {
 		PlayerObject::ringJump(object, skipCheck);
 		if (!this->isInNormalMode() || !snapOnJumpOrb || !object) return;
-		if (this->m_isDead || m_ringRelatedSet.contains(object->m_uniqueID)) return;
+		if (this->m_isDead || m_ringRelatedSet.count(object->m_uniqueID) != 0) return;
 		
 		// thank you prevter for the decomp
 		auto v7 = object->m_objectType == GameObjectType::CustomRing;
