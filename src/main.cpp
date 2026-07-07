@@ -6,6 +6,8 @@ bool enabled = true;
 bool snapOnJumpPad = false;
 bool snapOnJumpOrb = false;
 
+bool rotateActualPlayer = false;
+
 bool ignoreYellowOrb = false;
 bool ignorePinkOrb = false;
 bool ignoreBlueOrb = false;
@@ -33,6 +35,9 @@ $on_mod(Loaded) {
 
 	snapOnJumpOrb = Mod::get()->getSettingValue<bool>("snapOnJumpOrb");
 	listenForSettingChanges<bool>("snapOnJumpOrb", [](const bool newSnapOnJumpOrb) { snapOnJumpOrb = newSnapOnJumpOrb; });
+
+	rotateActualPlayer = Mod::get()->getSettingValue<bool>("rotateActualPlayer");
+	listenForSettingChanges<bool>("rotateActualPlayer", [](const bool newRotateActualPlayer) { rotateActualPlayer = newRotateActualPlayer; });
 
 	ignoreYellowOrb = Mod::get()->getSettingValue<bool>("ignoreYellowOrb");
 	listenForSettingChanges<bool>("ignoreYellowOrb", [](const bool ignoreYellowOrbNew) { ignoreYellowOrb = ignoreYellowOrbNew; });
@@ -86,7 +91,12 @@ $on_mod(Loaded) {
 class $modify(MyPlayerObject, PlayerObject) {
 	void snapToNearest90(const bool enforceGroundCheck) {
 		if (enabled && this->m_gameLayer && (this == m_gameLayer->m_player1 || this == m_gameLayer->m_player2) && this->isInNormalMode() && !this->m_isDashing && ((this->m_isOnGround && !this->m_isOnSlope) || enforceGroundCheck)) {
-			this->setRotation(std::round(this->getRotation() / 90.f) * 90.f);
+			const float desiredAngle = std::round(this->getRotation() / 90.f) * 90.f;
+			if (rotateActualPlayer) this->setRotation(desiredAngle);
+			else if (m_iconSprite && m_iconGlow) {
+				m_iconSprite->setRotation(desiredAngle);
+				m_iconGlow->setRotation(desiredAngle);
+			}
 		}
 	}
 	void hitGround(GameObject* object, bool notFlipped) {

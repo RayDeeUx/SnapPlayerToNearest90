@@ -18,6 +18,11 @@
 			"type": "bool",
 			"default": true
 		},
+		"rotateActualPlayer": {
+			"name": "Rotate Actual Player",
+			"type": "bool",
+			"default": false
+		},
 		"snapOnJumpPad": {
 			"name": "Snap Rotation on Jump Pad",
 			"type": "bool",
