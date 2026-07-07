@@ -89,9 +89,6 @@ $on_mod(Loaded) {
 }
 
 class $modify(MyPlayerObject, PlayerObject) {
-	struct Fields {
-		unsigned int stupidJump = 0;
-	};
 	void snapToNearest90(const bool enforceGroundCheck) {
 		if (enabled && this->m_gameLayer && (this == m_gameLayer->m_player1 || this == m_gameLayer->m_player2) && this->isInNormalMode() && !this->m_isDashing && ((this->m_isOnGround && !this->m_isOnSlope) || enforceGroundCheck)) {
 			const float desiredAngle = std::round(this->getRotation() / 90.f) * 90.f;
